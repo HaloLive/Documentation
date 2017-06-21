@@ -20,5 +20,6 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 |---|---|
 |Authorization:| Authorization: Bearer {[JWTModel.AccessToken](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authentication.Common/Models/JWTModel.cs)} |
 
+## Diagrams
 
-
+![alt text](http://imgur.com/MZG1vI1 "Auth Diagram")
