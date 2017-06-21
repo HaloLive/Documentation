@@ -22,4 +22,4 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 
 ## Diagrams
 
-![alt text](http://imgur.com/MZG1vI1 "Auth Diagram")
+![auth](http://i.imgur.com/MZG1vI1.png "Auth Diagram")
