@@ -12,7 +12,7 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 
 ## Diagrams
 
-![auth](http://i.imgur.com/MZG1vI1.png "Auth Diagram")
+![auth](http://i.imgur.com/tXlDKpz.png "Auth Diagram")
 
 **A:** Authentication for the issue of a JWT via OAuth. Autnenticates users via their auth credentials, username and password, for preforming actions on various distributed services. The JWT can be obtained by sending a POST to the below endpoint with the authentication details.
 
@@ -26,16 +26,6 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 
 **B:** The authentication JSON response that contains the [JWTModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authentication.Common/Models/JWTModel.cs) in the body.
 
-**C:** A [SignalR](https://github.com/aspnet/SignalR) realtime web event requesting authentication. Sends JSON object [RealtimeHubAuthorizationEventModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationRequestModel.cs) that, for now, contains the connection ID of the hub client.
+**C:** A [SignalR](https://github.com/aspnet/SignalR) realtime web request to authorize the hub connection for a user. Sends an empty request with an Authorization header that the endpoint hub can use to associate and authorize the hub connection with the authenticated account.
 
-**D:** Authorization/signin POST HTTP request sent to the arbitrary realtime backend service to authorize the hub connection to recieve events for the account encoded in the JWT authorization header. This request passes along the [RealtimeHubAuthorizationEventModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationEventModel.cs) sent to the client.
-
-|Method:|POST|
-|---|---|
-|Authorization:| Authorization: Bearer {[JWTModel.AccessToken](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authentication.Common/Models/JWTModel.cs)} |
-|Content-Type:|application/javascript|
-|Endpoint:|{baseurl}/api/signin|
-|Body:|JSON [RealtimeHubAuthorizationEventModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationEventModel.cs)|
-|Response:|[RealtimeHubAuthorizationResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationResponseModel.cs) as JSON body|
-
-**E:** Authorization/signin response HTTP response sent back containing the result of the authorization attempt for the [SignalR](https://github.com/aspnet/SignalR) hub. Contains [RealtimeHubAuthorizationResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationResponseModel.cs) as JSON in the response body.
+**D:** Authorization/signin response sent back containing the result of the authorization attempt for the [SignalR](https://github.com/aspnet/SignalR) hub. Contains [RealtimeHubAuthorizationResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationResponseModel.cs) as JSON in the response body.
