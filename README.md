@@ -12,9 +12,11 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 
 ## Diagrams
 
+### Authentication
+
 ![auth](http://i.imgur.com/tXlDKpz.png "Auth Diagram")
 
-**A:** Authentication for the issue of a JWT via OAuth. Autnenticates users via their auth credentials, username and password, for preforming actions on various distributed services. The JWT can be obtained by sending a POST to the below endpoint with the authentication details.
+**A:** Authentication request for the issue of a JWT via OAuth. Autnenticates users via their auth credentials, username and password, for preforming actions on various distributed services. The JWT can be obtained by sending a POST to the below endpoint with the authentication details.
 
 |Method:|POST|
 |---|---|
@@ -29,3 +31,19 @@ Matchmaking and Xboxlive-like services can be implemented quickly, efficiently, 
 **C:** A [SignalR](https://github.com/aspnet/SignalR) realtime web request to authorize the hub connection for a user. Sends an empty request with an Authorization header that the endpoint hub can use to associate and authorize the hub connection with the authenticated account.
 
 **D:** Authorization/signin response sent back containing the result of the authorization attempt for the [SignalR](https://github.com/aspnet/SignalR) hub. Contains [RealtimeHubAuthorizationResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.Authorization.Common/Models/RealtimeHubAuthorizationResponseModel.cs) as JSON in the response body.
+
+### Service Discovery
+
+![service discovery](http://i.imgur.com/KiPhNEw.png "Service Discovery")
+
+**A:** Service endpoint discovery request over HTTP. When clients need to know the endpoint for a service they can request it from the service discovery service. Clients don't know any endpoints but the service discovery. This gives an oppurtunity for naive loadbalancing, region based service resolution and just allows for the changing of endpoints post-deployment without patching.
+
+|Method:|POST|
+|---|---|
+|Authorization:|No|
+|Content-Type:|application/javascript|
+|Endpoint:|{baseurl}/api/ServiceDiscovery/Discover|
+|Body:|JSON [ResolveServiceEndpointRequestModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.NameResolution.Common/Models/ResolveServiceEndpointRequestModel.cs)|
+|Response:|[ResolveServiceEndpointResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.NameResolution.Common/Models/ResolveServiceEndpointResponseModel.cs) as JSON body|
+
+**B:** Service discovery response as an HTTP response. When the client requests a service endpoint we can respond with it, if it's available, or indicate that it's a service we don' know about or is unavailable. The response is sent as [ResolveServiceEndpointResponseModel](https://github.com/HaloLive/HaloLive.Library/blob/master/src/HaloLive.Models.NameResolution.Common/Models/ResolveServiceEndpointResponseModel.cs).
